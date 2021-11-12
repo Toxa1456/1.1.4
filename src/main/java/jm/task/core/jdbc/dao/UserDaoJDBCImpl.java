@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+
     public UserDaoJDBCImpl() {
 
     }
 
-    public void createTable() {
+    private void createTable() {
         try {
             Util.statement.executeUpdate("CREATE TABLE IF NOT EXISTS User(id BIGINT NOT NULL AUTO_INCREMENT," +
                     " name VARCHAR(30) NOT NULL, lastName VARCHAR(30) NOT NULL, age TINYINT NOT NULL," +
@@ -24,7 +25,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void dropTable() {
+    private void dropTable() {
         try {
             Util.statement.executeUpdate("DROP TABLE IF EXISTS User");
         } catch (SQLException throwables) {
@@ -33,7 +34,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void save(String name, String lastName, byte age) {
+    private void save(String name, String lastName, byte age) {
         try {
             Util.statement.executeUpdate("insert into User (name, lastName, age)" +
                     " values ('" + name + "', '" + lastName + "', '" + age + "' )");
@@ -43,7 +44,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void removeById(long id) {
+    private void removeById(long id) {
         try {
             Util.statement.executeUpdate("DELETE FROM User WHERE id = '" + id + "'");
         } catch (SQLException throwables) {
@@ -52,7 +53,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public List<User> getAll() {
+    private List<User> getAll() {
         List<User> list = new ArrayList<>();
         try {
             ResultSet resultSet = Util.statement.executeQuery("SELECT * FROM User");
@@ -68,7 +69,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return list;
     }
 
-    public void cleanTable() {
+    private void cleanTable() {
         try {
             Util.statement.executeUpdate("TRUNCATE TABLE User");
         } catch (SQLException throwables) {
