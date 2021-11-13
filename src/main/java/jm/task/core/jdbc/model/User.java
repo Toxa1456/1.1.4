@@ -62,6 +62,6 @@ public class User {
 
     @Override
     public String toString() {
-        return name + lastName + age.toString();
+        return name + " " + lastName + " " + age.toString();
     }
 }
