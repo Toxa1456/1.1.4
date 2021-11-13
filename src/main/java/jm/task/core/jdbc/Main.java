@@ -14,8 +14,10 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
+
         UserService userService = new UserServiceImpl();
-        userService.cleanUsersTable();
+
+        userService.createUsersTable();
         User user1 = new User("Tom", "Kryze", (byte) 15);
         User user2 = new User("Dim", "Gaga", (byte) 25);
         User user3 = new User("Piter", "Parker", (byte) 35);
@@ -31,12 +33,9 @@ public class Main {
         userService.saveUser(user4.getName(), user4.getLastName(), user4.getAge());
         System.out.println("User "+ user4.getName() + " добавлен");
 
-        UserDao userDao2 = new UserDaoHibernateImpl();
-        userDao2.saveUser("Dima", "Bilan", (byte) 46);
         List<User> list = userService.getAllUsers();
         for(User user : list){
             System.out.println(user.toString());
         }
-
     }
 }
