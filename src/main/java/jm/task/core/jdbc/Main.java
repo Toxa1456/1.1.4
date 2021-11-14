@@ -12,12 +12,10 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
-
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         UserService userService = new UserServiceImpl();
 
-        userService.createUsersTable();
         User user1 = new User("Tom", "Kryze", (byte) 15);
         User user2 = new User("Dim", "Gaga", (byte) 25);
         User user3 = new User("Piter", "Parker", (byte) 35);
@@ -37,5 +35,8 @@ public class Main {
         for(User user : list){
             System.out.println(user.toString());
         }
+
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
     }
 }
