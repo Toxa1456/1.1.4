@@ -20,7 +20,6 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("1");
     }
 
     public void dropUsersTable() {
@@ -29,7 +28,6 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("2");
     }
 
     public void saveUser(String name, String lastName, byte age) {
