@@ -17,27 +17,27 @@ public class Util {
     private static final String login = "root";
     private static final String password = "1234";
     private static final String URL = "jdbc:mysql://localhost:3306/test?useSSL=false";
-    public static Connection connection;
-    public static Statement statement;
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DIALECT = "org.hibernate.dialect.MySQL5Dialect";
+    public static Connection connection = null;
     private static SessionFactory sessionFactory = null;
-    private static ServiceRegistry serviceRegistry = null;
 
 
     public static SessionFactory getSessionFactory() {
         try {
             if (sessionFactory == null) {
                 Properties settings = new Properties();
-                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+                settings.put(Environment.DRIVER, DRIVER);
                 settings.put(Environment.URL, URL);
                 settings.put(Environment.USER, login);
                 settings.put(Environment.PASS, password);
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                settings.put(Environment.DIALECT, DIALECT);
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.HBM2DDL_AUTO, "update");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 Configuration configuration = new Configuration().setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
-                serviceRegistry = new StandardServiceRegistryBuilder()
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             }
@@ -47,27 +47,18 @@ public class Util {
         return sessionFactory;
     }
 
-    public static void close () {
-        if (sessionFactory != null) {
-            StandardServiceRegistryBuilder.destroy(serviceRegistry);
-            serviceRegistry = null;
-        }
-    }
-
-    static {
+    public static Connection getConnection () {
         try {
             connection = DriverManager.getConnection(URL, login, password);
+            connection.setAutoCommit(true);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            throw new RuntimeException();
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
-    static {
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            throw new RuntimeException();
-        }
+        return connection;
     }
 }
